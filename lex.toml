@@ -1,8 +1,8 @@
 [package]
-name = "lex-crypto"
-version = "0.1.0"
+name        = "lex-crypto"
+version     = "0.1.0"
 description = "Higher-level cryptographic library for Lex: JWT, OAuth2/PKCE, Argon2id, signed/sealed cookies, webhook verification, TOTP"
+lex         = "0.9.2"
 
 [dependencies]
-# lex-schema = { path = "../lex-schema" }
-# lex-schema = { git = "https://github.com/alpibrusl/lex-schema" }
+lex-schema = { git = "https://github.com/alpibrusl/lex-schema" }
