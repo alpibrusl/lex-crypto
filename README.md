@@ -364,4 +364,4 @@ LEX_TEST_NOW=1700000000 lex test
 
 ## License
 
-MIT
+European Union Public Licence v1.2 (EUPL-1.2)
