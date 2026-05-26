@@ -365,3 +365,7 @@ LEX_TEST_NOW=1700000000 lex test
 ## License
 
 European Union Public Licence v1.2 (EUPL-1.2)
+
+---
+
+Built under the principles of [Trust Without Comprehension](https://alpibru.com/manifesto).
