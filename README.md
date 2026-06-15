@@ -1,5 +1,9 @@
 # lex-crypto
 
+[![CI](https://github.com/alpibrusl/lex-crypto/actions/workflows/lex.yml/badge.svg)](https://github.com/alpibrusl/lex-crypto/actions/workflows/lex.yml)
+
+**Part of the [Lex](https://lexlang.org) project** — Library · [Manifesto](https://lexlang.org/manifesto) · [All packages](https://lexlang.org)
+
 A higher-level cryptographic library for [Lex](https://github.com/alpibrusl/lex-lang), built on top of `std.crypto`. Provides JWT, OAuth2/PKCE, password hashing (Argon2id), signed/sealed cookies, webhook signature verification, and TOTP.
 
 ## Modules
