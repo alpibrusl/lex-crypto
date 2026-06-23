@@ -30,7 +30,6 @@ fn verify(public :: Bytes, message :: Bytes, signature :: Bytes) -> Bool {
 }
 
 # ── base64url string convenience (for cards / tokens / URLs) ──────────────────
-
 # Public key as a base64url string.
 fn public_key_b64(secret :: Bytes) -> Result[Str, Str] {
   match crypto.ed25519_public_key(secret) {
@@ -58,3 +57,4 @@ fn verify_text(public_b64 :: Str, text :: Str, signature_b64 :: Str) -> Bool {
     },
   }
 }
+
