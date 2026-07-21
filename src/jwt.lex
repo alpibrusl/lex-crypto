@@ -41,6 +41,53 @@ fn sign_hs256(secret :: Bytes, claims :: Claims) -> Str {
   signing_input + "." + sig
 }
 
+# HS256 header carrying a `kid` (key id), so a verifier holding several keys can
+# tell which one signed a token instead of trying each. The kid is advisory: it
+# selects a candidate key, but the signature is still verified cryptographically,
+# so a wrong or forged kid only costs a fallback, never a bypass.
+fn header_hs256_kid(kid :: Str) -> Str {
+  crypto.base64url_encode(bytes.from_str("{\"alg\":\"HS256\",\"typ\":\"JWT\",\"kid\":\"" + util.json_escape(kid) + "\"}"))
+}
+
+# Sign like sign_hs256 but stamp `kid` in the header. Verifies with the same
+# verify_hs256/verify_token — those recompute over the token's OWN header, so the
+# kid is covered by the signature and a token is bound to its declared key id.
+fn sign_hs256_kid(secret :: Bytes, kid :: Str, claims :: Claims) -> Str {
+  let payload := crypto.base64url_encode(bytes.from_str(claims_to_json(claims)))
+  let signing_input := header_hs256_kid(kid) + "." + payload
+  let sig := crypto.base64url_encode(crypto.hmac_sha256(secret, bytes.from_str(signing_input)))
+  signing_input + "." + sig
+}
+
+# The `kid` declared in a token's header, if any. Unverified — for key
+# SELECTION only; always verify the chosen key cryptographically afterwards.
+fn token_kid(token :: Str) -> Option[Str] {
+  match list.head(str.split(token, ".")) {
+    None => None,
+    Some(header_b64) => match crypto.base64url_decode(header_b64) {
+      Err(_) => None,
+      Ok(hb) => match bytes.to_str(hb) {
+        Err(_) => None,
+        Ok(hs) => json_str_field(hs, "kid"),
+      },
+    },
+  }
+}
+
+# Pull a top-level string field out of a small, trusted JSON object (the JWT
+# header we emit). Values with embedded quotes are not expected here; a partial
+# read only mis-selects a key, which verification then rejects.
+fn json_str_field(js :: Str, key :: Str) -> Option[Str] {
+  let marker := "\"" + key + "\":\""
+  match list.head(list.tail(str.split(js, marker))) {
+    None => None,
+    Some(after) => match list.head(str.split(after, "\"")) {
+      None => None,
+      Some(v) => Some(v),
+    },
+  }
+}
+
 fn sign_hs512(secret :: Bytes, claims :: Claims) -> Str {
   let payload := crypto.base64url_encode(bytes.from_str(claims_to_json(claims)))
   let signing_input := header_hs512() + "." + payload
