@@ -16,7 +16,7 @@ import "./util" as util
 
 type Claims = { sub :: Str, iss :: Str, aud :: Str, jti :: Str, exp :: Int, nbf :: Int, iat :: Int }
 
-type JwtError = InvalidFormat | InvalidBase64 | InvalidSignature | Expired | NotYetValid | InvalidJson
+type JwtError = InvalidFormat | InvalidBase64 | InvalidSignature | JwtExpired | NotYetValid | InvalidJson
 
 fn default_claims() -> Claims {
   { sub: "", iss: "", aud: "", jti: "", exp: 0, nbf: 0, iat: 0 }
@@ -142,7 +142,7 @@ fn verify_token(secret :: Bytes, token :: Str, alg :: Str) -> [time] Result[Clai
                                 Ok(claims) => {
                                   let now := time.now()
                                   if claims.exp > 0 and claims.exp < now {
-                                    Err(Expired)
+                                    Err(JwtExpired)
                                   } else {
                                     if claims.nbf > 0 and claims.nbf > now {
                                       Err(NotYetValid)

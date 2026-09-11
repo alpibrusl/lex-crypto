@@ -52,7 +52,7 @@ fn verify_hs512(secret :: Bytes, token :: Str) -> [time] Result[Claims, JwtError
 
 fn decode_unverified(token :: Str) -> Result[Claims, JwtError]
 
-type JwtError = InvalidFormat | InvalidBase64 | InvalidSignature | Expired | NotYetValid | InvalidJson
+type JwtError = InvalidFormat | InvalidBase64 | InvalidSignature | JwtExpired | NotYetValid | InvalidJson
 ```
 
 **Example:**
@@ -77,7 +77,7 @@ fn handle_login(secret :: Bytes) -> [time] Str {
 fn handle_request(secret :: Bytes, token :: Str) -> [time] Result[Str, Str] {
   match jwt.verify_hs256(secret, token) {
     Err(jwt.InvalidSignature) => Err("bad token"),
-    Err(jwt.Expired)          => Err("token expired"),
+    Err(jwt.JwtExpired)       => Err("token expired"),
     Err(_)                    => Err("invalid token"),
     Ok(claims)                => Ok("hello, " + claims.sub),
   }
