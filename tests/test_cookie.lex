@@ -21,7 +21,7 @@ fn make_aead_key() -> Bytes {
 }
 
 fn fixed_nonce() -> Bytes {
-  bytes.from_str("nonce-12bytes")
+  bytes.from_str("nonce123byte")
 }
 
 fn run_all() -> [time] Int {

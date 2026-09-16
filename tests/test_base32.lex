@@ -21,23 +21,23 @@ fn test_decode_known_vectors() -> Int {
     Err(_) => 1,
     Ok(b) => chk(bytes.eq(b, bytes.from_str("f"))),
   }
-  let f2 := match base32.decode("MFRA====") {
+  let f2 := match base32.decode("MZXQ====") {
     Err(_) => 1,
     Ok(b) => chk(bytes.eq(b, bytes.from_str("fo"))),
   }
-  let f3 := match base32.decode("MFRGG===") {
+  let f3 := match base32.decode("MZXW6===") {
     Err(_) => 1,
     Ok(b) => chk(bytes.eq(b, bytes.from_str("foo"))),
   }
-  let f4 := match base32.decode("MFRGGZA=") {
+  let f4 := match base32.decode("MZXW6YQ=") {
     Err(_) => 1,
     Ok(b) => chk(bytes.eq(b, bytes.from_str("foob"))),
   }
-  let f5 := match base32.decode("MFRGGZDF") {
+  let f5 := match base32.decode("MZXW6YTB") {
     Err(_) => 1,
     Ok(b) => chk(bytes.eq(b, bytes.from_str("fooba"))),
   }
-  let f6 := match base32.decode("MFRGGZDFMY======") {
+  let f6 := match base32.decode("MZXW6YTBOI======") {
     Err(_) => 1,
     Ok(b) => chk(bytes.eq(b, bytes.from_str("foobar"))),
   }
@@ -45,7 +45,7 @@ fn test_decode_known_vectors() -> Int {
 }
 
 fn test_encode_known_vectors() -> Int {
-  chk(base32.encode(bytes.from_str("f")) == "MY======") + chk(base32.encode(bytes.from_str("fo")) == "MFRA====") + chk(base32.encode(bytes.from_str("foo")) == "MFRGG===") + chk(base32.encode(bytes.from_str("foob")) == "MFRGGZA=") + chk(base32.encode(bytes.from_str("fooba")) == "MFRGGZDF") + chk(base32.encode(bytes.from_str("foobar")) == "MFRGGZDFMY======") + chk(base32.encode(bytes.from_str("")) == "")
+  chk(base32.encode(bytes.from_str("f")) == "MY======") + chk(base32.encode(bytes.from_str("fo")) == "MZXQ====") + chk(base32.encode(bytes.from_str("foo")) == "MZXW6===") + chk(base32.encode(bytes.from_str("foob")) == "MZXW6YQ=") + chk(base32.encode(bytes.from_str("fooba")) == "MZXW6YTB") + chk(base32.encode(bytes.from_str("foobar")) == "MZXW6YTBOI======") + chk(base32.encode(bytes.from_str("")) == "")
 }
 
 fn test_encode_roundtrip() -> Int {
